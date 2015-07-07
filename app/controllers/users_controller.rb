@@ -8,7 +8,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:notice] = "Welcome to Stack Overflow. Please enter your email and password"
-      redirect_to new_sessions_path
+      UserMailer.signup_confirmation(@user).deliver
+      redirect_to @user, notice: "Signed up successfully."
     else
       flash[:alert] = "There was a problem creating your account. Please try again."
       redirect_to :back
